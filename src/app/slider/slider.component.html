@@ -1,0 +1,10 @@
+<ng-container *ngIf="event">
+    <mat-slider
+      min="0"
+      [max]="event.length - 1"
+      step="1"
+      thumbLabel
+      (input)="onSliderChange($event, event)"
+    ></mat-slider>
+  </ng-container>
+  

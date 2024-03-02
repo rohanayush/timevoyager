@@ -1,0 +1,15 @@
+.timeline {
+    width: 100%;
+    overflow-x: auto;
+  }
+  
+  .timeline-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .timeline-item {
+    /* Style each event card */
+    margin-right: 20px; /* Adjust spacing between events */
+  }
+  
