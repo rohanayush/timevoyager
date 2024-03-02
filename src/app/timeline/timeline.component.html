@@ -1,20 +1,10 @@
-<!-- <mat-slider min="0" max="{{lenEvents}}" step="1" showTickMarks discrete [displayWith]="formatLabel">
-    <input matSliderThumb>
-</mat-slider>
-  
-<div *ngIf="!events">Loading events...</div>
-<div *ngIf="events">Events is available!</div> -->
-
-<!-- <app-event-card *ngIf="selectedEvent && counter > 0 " [eventId]="selectedEvent"></app-event-card> -->
-
 <div class="timeline">
-    <div class="line">
-
-    </div>
+    <div class="line" [ngStyle]="{'background-color': blueDotIndex !== null ? 'blue' : 'grey', 'width': blueDotIndex !== null ? (blueDotIndex * 25 + 12.5) + '%' : '0'}"></div>
     <div class="intervals">
-        <div>.</div>
-        <div>.</div>
-        <div>.</div>
-        <div>.</div>
+      <div class="dot" (click)="highlightLine(0)" [ngClass]="{'blue': isBlueDot(0)}"></div>
+      <div class="dot" (click)="highlightLine(1)" [ngClass]="{'blue': isBlueDot(1)}"></div>
+      <div class="dot" (click)="highlightLine(2)" [ngClass]="{'blue': isBlueDot(2)}"></div>
+      <div class="dot" (click)="highlightLine(3)" [ngClass]="{'blue': isBlueDot(3)}"></div>
     </div>
-</div>
+  </div>
+  

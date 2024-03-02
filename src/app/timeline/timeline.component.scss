@@ -1,17 +1,9 @@
-mat-slider {
-    width: 300px;
-    margin-top:40px;
-  }
-
-  .timeline {
+.timeline {
     position: relative;
-    margin-top:50px;
   }
   
   .line {
-    width: 100%;
     height: 2px; /* Adjust the height of the line */
-    background-color: grey;
   }
   
   .intervals {
@@ -23,10 +15,16 @@ mat-slider {
     transform: translateY(-50%);
   }
   
-  .intervals > div {
+  .dot {
     width: 10px; /* Adjust the width of the dots */
     height: 10px; /* Adjust the height of the dots */
     background-color: black; /* Set the color of the dots */
     border-radius: 50%; /* Make the dots circular */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    margin-left: -5px; /* Adjust the left margin to provide offset */
+  }
+  
+  .dot.blue {
+    background-color: blue; /* Set the color of the blue dots */
   }
   
