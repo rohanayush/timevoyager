@@ -1,15 +1,32 @@
-.timeline {
+mat-slider {
+    width: 300px;
+    margin-top:40px;
+  }
+
+  .timeline {
+    position: relative;
+    margin-top:50px;
+  }
+  
+  .line {
     width: 100%;
-    overflow-x: auto;
+    height: 2px; /* Adjust the height of the line */
+    background-color: grey;
   }
   
-  .timeline-wrapper {
+  .intervals {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between; /* Distribute the intervals evenly */
+    position: absolute;
+    width: 100%;
+    top: 50%; /* Position the intervals vertically in the middle */
+    transform: translateY(-50%);
   }
   
-  .timeline-item {
-    /* Style each event card */
-    margin-right: 20px; /* Adjust spacing between events */
+  .intervals > div {
+    width: 10px; /* Adjust the width of the dots */
+    height: 10px; /* Adjust the height of the dots */
+    background-color: black; /* Set the color of the dots */
+    border-radius: 50%; /* Make the dots circular */
   }
   

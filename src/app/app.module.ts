@@ -9,6 +9,7 @@ import { EventCardComponent } from './event-card/event-card.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +18,13 @@ import { FormsModule } from '@angular/forms';
     EventDetailsComponent,
     EventCardComponent,
   ],
-  imports: [BrowserModule, CommonModule, FormsModule, MatSliderModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    FormsModule,
+    MatSliderModule,
+  ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
 })

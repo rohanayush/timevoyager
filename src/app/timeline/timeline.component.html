@@ -1,15 +1,20 @@
-<!-- <div class="timeline">
-    <div class="timeline-wrapper" [style.width.px]="timelineWidth">
-      <div class="timeline-item" *ngFor="let event of events">
-
-        Display event information here
-        <img [src]="event.image" alt="{{ event.title }}">
-      <h3>{{ event.title }}</h3>
-      <p>{{ event.date }}</p>
-      <p>{{ event.description }}</p>
-      <a [href]="event.video" target="_blank">Watch Video</a>
-      </div>
-    </div>
-  </div> -->
+<!-- <mat-slider min="0" max="{{lenEvents}}" step="1" showTickMarks discrete [displayWith]="formatLabel">
+    <input matSliderThumb>
+</mat-slider>
   
-  <app-slider [events]="milestone"></app-slider>
+<div *ngIf="!events">Loading events...</div>
+<div *ngIf="events">Events is available!</div> -->
+
+<!-- <app-event-card *ngIf="selectedEvent && counter > 0 " [eventId]="selectedEvent"></app-event-card> -->
+
+<div class="timeline">
+    <div class="line">
+
+    </div>
+    <div class="intervals">
+        <div>.</div>
+        <div>.</div>
+        <div>.</div>
+        <div>.</div>
+    </div>
+</div>
