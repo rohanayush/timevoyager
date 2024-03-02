@@ -1,10 +1,13 @@
-<div class="timeline">
-    <div class="line" [ngStyle]="{'background-color': blueDotIndex !== null ? 'blue' : 'grey', 'width': blueDotIndex !== null ? (blueDotIndex * 25 + 12.5) + '%' : '0'}"></div>
-    <div class="intervals">
-      <div class="dot" (click)="highlightLine(0)" [ngClass]="{'blue': isBlueDot(0)}"></div>
-      <div class="dot" (click)="highlightLine(1)" [ngClass]="{'blue': isBlueDot(1)}"></div>
-      <div class="dot" (click)="highlightLine(2)" [ngClass]="{'blue': isBlueDot(2)}"></div>
-      <div class="dot" (click)="highlightLine(3)" [ngClass]="{'blue': isBlueDot(3)}"></div>
-    </div>
-  </div>
-  
+<section class="cd-horizontal-timeline">
+	<div class="timeline">
+		<div class="events-wrapper">
+			<div class="events">
+				<ol *ngFor="let year of years">
+					<li><a  class="{{year.selected}}">{{year.label}}</a></li>
+				</ol>
+
+				<span class="filling-line" aria-hidden="true"></span>
+			</div> <!-- .events -->
+		</div> <!-- .events-wrapper -->
+    </div>	
+</section>

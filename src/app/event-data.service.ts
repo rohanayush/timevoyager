@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject, of } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, map, of } from 'rxjs';
 import { EventsStruc } from './model/events';
 
 @Injectable({
@@ -51,6 +51,12 @@ export class EventDataService {
     return of(this.events);
   }
 
+  getAllDate(): Observable<string[]> {
+    return of(this.events).pipe(
+      map(eventsArr => eventsArr.map(event => event.date))
+    );
+  }
+  
   getEventById(id: number): Observable<EventsStruc | undefined> {
     const event = this.events.find((e) => e.id === id);
     return of(event);
