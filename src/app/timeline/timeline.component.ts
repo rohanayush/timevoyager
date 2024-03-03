@@ -42,21 +42,22 @@ export class TimelineComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.eventService.getEvents().subscribe((events) => {
       this.events = events;
-      this.timelineData = this.events.map((event, index) => {
-        return {
-          date: event.date, // Set content as date for first event, otherwise use title
-          dot: index === 0 ? 'Y' : 'N', // Set dot as 'Y' for first event, 'N' for others
-          line: 'N', // Set line as 'N' for all events
-        };
-      });
+      // this.timelineData = this.events.map((event, index) => {
+      //   return {
+      //     date: event.date, // Set content as date for first event, otherwise use title
+      //     dot: index === 0 ? 'Y' : 'N', // Set dot as 'Y' for first event, 'N' for others
+      //     line: 'N', // Set line as 'N' for all events
+      //     sp
+      //   };
+      // });
       console.log('timeline', this.timelineData);
     });
-    this.events = [
-      { content: 'Ordered', dot: 'Y', line: 'N' },
-      { content: 'Processing' },
-      { content: 'Shipped' },
-      { content: 'Delivered' },
-    ];
+    // this.events = [
+    //   { content: 'Ordered', dot: 'Y', line: 'N' },
+    //   { content: 'Processing' },
+    //   { content: 'Shipped' },
+    //   { content: 'Delivered' },
+    // ];
     document.addEventListener('DOMContentLoaded', () => {
       this.initZoomable();
     });
@@ -130,7 +131,7 @@ export class TimelineComponent implements OnInit, AfterViewInit {
     const initialGrabPosition = event.clientX;
     const initialScrollPosition = scrollableElement.scrollLeft;
 
-    this.renderer.listen(document, 'mousemove', (mouseMoveEvent) => {
+    this.renderer.listen(scrollableElement, 'mousemove', (mouseMoveEvent) => {
       const mouseMovementDistance =
         mouseMoveEvent.clientX - initialGrabPosition;
       scrollableElement.scrollLeft =
