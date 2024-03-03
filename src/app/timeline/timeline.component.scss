@@ -38,10 +38,19 @@ body {
 }
 .timeline-content{
   margin-top:210px;
-  // margin-left:-100px;
+  margin-left:-30px;
   padding:0 0.3rem;
 }
 
 .popup{
-  z-index:99;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  backdrop-filter: blur(3px);
+  position: fixed;
+  top: 0;
+  left:0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

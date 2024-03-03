@@ -110,65 +110,49 @@ export class TimelineComponent implements OnInit, AfterViewInit {
   // new scrolling
   initScrollable(): void {
     const scrollableElement = this.scrollable.nativeElement;
-
+  
     this.renderer.listen(scrollableElement, 'mousedown', (mouseEvent) => {
-      this.onMouseDown(mouseEvent);
-    });
-
-    this.renderer.listen(scrollableElement, 'mouseup', () => {
-      this.onMouseUp();
-    });
-
-    this.renderer.listen(scrollableElement, 'mousemove', (mouseEvent) => {
-      this.onMouseMove(mouseEvent);
+      // Check if left mouse button is pressed
+      if (mouseEvent.button === 0) {
+        this.onMouseDown(mouseEvent);
+      }
     });
   }
-
+  
   onMouseDown(event: MouseEvent): void {
     const scrollableElement = this.scrollable.nativeElement;
     this.renderer.setStyle(scrollableElement, 'cursor', 'grabbing');
-
+  
     const initialGrabPosition = event.clientX;
     const initialScrollPosition = scrollableElement.scrollLeft;
-
-    this.renderer.listen(scrollableElement, 'mousemove', (mouseMoveEvent) => {
-      const mouseMovementDistance =
-        mouseMoveEvent.clientX - initialGrabPosition;
-      scrollableElement.scrollLeft =
-        initialScrollPosition - mouseMovementDistance;
+  
+    // Attach mousemove event listener only when left mouse button is pressed
+    const mouseMoveListener = this.renderer.listen(scrollableElement, 'mousemove', (mouseMoveEvent) => {
+      const mouseMovementDistance = mouseMoveEvent.clientX - initialGrabPosition;
+      scrollableElement.scrollLeft = initialScrollPosition - mouseMovementDistance;
     });
-
-    this.renderer.listen(document, 'mouseup', () => {
-      this.onMouseUp();
+  
+    // Detach mousemove event listener when mouse button is released
+    const mouseUpListener = this.renderer.listen(document, 'mouseup', () => {
+      this.onMouseUp(mouseMoveListener, mouseUpListener);
     });
   }
-
-  onMouseUp(): void {
+  
+  onMouseUp(mouseMoveListener: Function, mouseUpListener: Function): void {
     const scrollableElement = this.scrollable.nativeElement;
     this.renderer.setStyle(scrollableElement, 'cursor', 'grab');
-
-    if (this.mouseMoveListener) {
-      this.mouseMoveListener();
+  
+    // Remove mousemove listener
+    if (mouseMoveListener) {
+      mouseMoveListener();
     }
-
-    if (this.mouseUpListener) {
-      this.mouseUpListener();
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.mouseMoveListener) {
-      this.mouseMoveListener();
-    }
-
-    if (this.mouseUpListener) {
-      this.mouseUpListener();
+  
+    // Remove mouseup listener
+    if (mouseUpListener) {
+      mouseUpListener();
     }
   }
-
-  onMouseMove(event: MouseEvent): void {
-    // You can implement any additional logic here if needed
-  }
+  
 
   //zooming
 

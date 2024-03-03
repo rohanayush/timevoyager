@@ -2,7 +2,7 @@
   <div class="modal-content">
     <span class="close" (click)="onClose()">×</span>
     <h2>{{ event?.title }}</h2>
-    <!-- <img [src]="" alt="Event Image" /> -->
+    <img [src]="event?.image" alt="Event Image" />
     <p>{{ event?.description }}</p>
      <a href="{{event?.video}}">Watch Video</a>
   </div>
