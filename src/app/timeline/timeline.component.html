@@ -1,17 +1,4 @@
-<!-- <div class="timeline" (wheel)="onTimelineScroll($event)">
-    <div class="timeline-wrapper" [style.width.px]="timelineWidth">
-      <div *ngFor="let event of events" class="event-card" (click)="showEventDetails(event)">
-        <img [src]="'assets/' + event.image" alt="{{ event.title }}">
-        <h3>{{ event.title }}</h3>
-        <p>{{ event.date }}</p>
-      </div>
-    </div>
-  </div>
-  <div class="zoom-controls">
-    <button (click)="zoomIn()">Zoom In</button>
-    <button (click)="zoomOut()">Zoom Out</button>
-  </div>
-   -->
+
 <div class="timeline">
   <div class="timeline-event">
     <div class="timeline-point-track-container">
@@ -19,17 +6,13 @@
       <div class="timeline-track"></div>
     </div>
   </div>
-  
 
-  <div
-    *ngFor="let item of events"
-    class="timeline-event"
-    
-  >
+  <div *ngFor="let item of events" class="timeline-event">
     <div class="timeline-point-track-container">
       <div
         class="timeline-point"
-        [ngClass]="{ highlight: item.dot === 'Y' }" (click)="toggleStatus(item)"
+        [ngClass]="{ highlight: item.dot === 'Y' }"
+        (click)="toggleStatus(item)"
       ></div>
       <div
         class="timeline-track"
@@ -40,5 +23,9 @@
       <span>{{ item.content }}</span>
       <span>{{ item.date }}</span>
     </div>
+  </div>
+  <div class="timeline-point-track-container">
+    <div class="timeline-point"></div>
+    <div class="timeline-track"></div>
   </div>
 </div>

@@ -1,31 +1,36 @@
-
-//new code
 .timeline {
   display: flex;
   flex-grow: 1;
-  flex-direction: column;
   padding: 1rem;
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
 }
+
 .timeline-event {
   display: flex;
+  flex-direction: column;
+  gap:20px;
   position: relative;
-  min-height: 70px;
+  // border: 2px solid;
+  // align-items: start;
+  min-width: 70px; /* Adjust to min-width for horizontal layout */
 }
 
 .timeline-event:last-child {
-  min-height: 0;
+  min-width: 0; /* Adjust to min-width for horizontal layout */
 }
 
 .timeline-content {
-  flex: 1;
-  padding: 0 1rem;
+  padding: 0 3rem;
+  margin-left:-50px;
+  display: flex;
+  flex-direction: column;
+  // text-align: center;
 }
 
 .timeline-point-track-container {
-  flex: 0;
   display: flex;
   align-items: center;
-  flex-direction: column;
+  // flex-direction: column;
 }
 
 .timeline-point {
@@ -42,15 +47,20 @@
   border: 2px solid #5f5f60;
   background: #5f5f60;
 }
+
 .timeline-event:first-child .timeline-track {
   background-color: #1b7ff3;
-  // box-shadow: 0px 4px 8px #8db8e4;
 }
+.timeline-point-track-container:last-child .timeline-point:first-child {
+  border: 2px solid #5f5f60;
+  background: #5f5f60;
+}
+
 
 .timeline-track {
   flex-grow: 1;
-  background-color: #dee2e6;
-  width: 2px;
+  background-color: #5f5f60; /* Set background color for the track line */
+  height: 2px; /* Adjust to height for horizontal layout */
 }
 
 .timeline-date {
