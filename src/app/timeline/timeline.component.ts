@@ -1,4 +1,13 @@
-import { Component, OnInit, HostListener, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  HostListener,
+  Input,
+  ElementRef,
+  ViewChild,
+  AfterViewInit,
+  Renderer2,
+} from '@angular/core';
 import { EventDataService } from '../event-data.service';
 import { fromEvent, filter, map, takeUntil } from 'rxjs';
 
@@ -7,7 +16,7 @@ import { fromEvent, filter, map, takeUntil } from 'rxjs';
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
 })
-export class TimelineComponent implements OnInit{
+export class TimelineComponent implements OnInit, AfterViewInit {
   events: any[] | undefined;
   timelineWidth: number = 0;
   zoomLevel: number = 1;
@@ -17,17 +26,18 @@ export class TimelineComponent implements OnInit{
   @ViewChild('scrollable') scrollable!: ElementRef<HTMLDivElement>;
   @ViewChild('zoomable') zoomable!: ElementRef<HTMLElement>;
 
+  mouseMoveListener: Function | undefined;
+  mouseUpListener: Function | undefined;
 
   scale = 1;
   mouseHasMoved = true;
   mousePositionRelative: any;
   elementUnderMouse: any;
 
-
-
- 
-  
-  constructor(private eventService: EventDataService) {}
+  constructor(
+    private eventService: EventDataService,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
     this.eventService.getEvents().subscribe((events) => {
@@ -52,20 +62,8 @@ export class TimelineComponent implements OnInit{
     });
   }
 
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.calculateTimelineWidth();
-  }
-
-  calculateTimelineWidth() {
-    if (this.events && this.events.length > 0) {
-      // Calculate timeline width based on the number of events
-      // This can be adjusted based on your design requirements
-      const eventCardWidth = 300; // Adjust this value according to your design
-      this.timelineWidth = this.events.length * eventCardWidth;
-    } else {
-      this.timelineWidth = 0;
-    }
+  ngAfterViewInit(): void {
+    this.initScrollable();
   }
 
   toggleStatus(index: any): void {
@@ -104,57 +102,74 @@ export class TimelineComponent implements OnInit{
     }
   }
 
-
-
-  showEventDetails(event: any) {
-    // Implement this method to show event details popup
-
-    // Center the clicked card within the timeline
-    if (this.events) {
-      var cardIndex = this.events.findIndex((e) => e.id === event.id);
-
-      if (cardIndex !== -1) {
-        const cardWidth = 300; // Adjust this value according to your design
-        const timelineElement = document.querySelector('.timeline');
-        if (timelineElement) {
-          const timelineWidth = timelineElement.clientWidth;
-          const scrollLeft =
-            cardIndex * cardWidth - timelineWidth / 2 + cardWidth / 2;
-          timelineElement.scrollLeft = scrollLeft;
-        }
-      }
-    }
-  }
- 
-  // scrolling
   mouseDown = false;
   initialGrabPosition = 0;
   initialScrollPosition = 0;
 
-  onMouseDown(event: MouseEvent) {
-    this.mouseDown = true;
-    this.scrollable.nativeElement.style.cursor = 'grabbing';
-    this.initialGrabPosition = event.clientX;
-    this.initialScrollPosition = this.scrollable.nativeElement.scrollLeft;
+  // new scrolling
+  initScrollable(): void {
+    const scrollableElement = this.scrollable.nativeElement;
+
+    this.renderer.listen(scrollableElement, 'mousedown', (mouseEvent) => {
+      this.onMouseDown(mouseEvent);
+    });
+
+    this.renderer.listen(scrollableElement, 'mouseup', () => {
+      this.onMouseUp();
+    });
+
+    this.renderer.listen(scrollableElement, 'mousemove', (mouseEvent) => {
+      this.onMouseMove(mouseEvent);
+    });
   }
 
-  onMouseUp() {
-    this.mouseDown = false;
-    this.scrollable.nativeElement.style.cursor = 'grab';
+  onMouseDown(event: MouseEvent): void {
+    const scrollableElement = this.scrollable.nativeElement;
+    this.renderer.setStyle(scrollableElement, 'cursor', 'grabbing');
+
+    const initialGrabPosition = event.clientX;
+    const initialScrollPosition = scrollableElement.scrollLeft;
+
+    this.renderer.listen(document, 'mousemove', (mouseMoveEvent) => {
+      const mouseMovementDistance =
+        mouseMoveEvent.clientX - initialGrabPosition;
+      scrollableElement.scrollLeft =
+        initialScrollPosition - mouseMovementDistance;
+    });
+
+    this.renderer.listen(document, 'mouseup', () => {
+      this.onMouseUp();
+    });
   }
 
-  onMouseMove(event: MouseEvent) {
-    if (this.mouseDown) {
-      const mouseMovementDistance = event.clientX - this.initialGrabPosition;
-      this.scrollable.nativeElement.scrollLeft = this.initialScrollPosition - mouseMovementDistance;
+  onMouseUp(): void {
+    const scrollableElement = this.scrollable.nativeElement;
+    this.renderer.setStyle(scrollableElement, 'cursor', 'grab');
+
+    if (this.mouseMoveListener) {
+      this.mouseMoveListener();
+    }
+
+    if (this.mouseUpListener) {
+      this.mouseUpListener();
     }
   }
-  
 
+  ngOnDestroy(): void {
+    if (this.mouseMoveListener) {
+      this.mouseMoveListener();
+    }
 
+    if (this.mouseUpListener) {
+      this.mouseUpListener();
+    }
+  }
+
+  onMouseMove(event: MouseEvent): void {
+    // You can implement any additional logic here if needed
+  }
 
   //zooming
- 
 
   initZoomable(): void {
     const zoomable = this.zoomable.nativeElement;
@@ -172,8 +187,12 @@ export class TimelineComponent implements OnInit{
         zoomable.style.width = this.scale * 100 + '%';
 
         if (this.mouseHasMoved) {
-          this.elementUnderMouse = this.findElementUnderMouse(wheelEvent.clientX);
-          this.mousePositionRelative = (wheelEvent.clientX - this.getLeft(this.elementUnderMouse)) / this.getWidth(this.elementUnderMouse);
+          this.elementUnderMouse = this.findElementUnderMouse(
+            wheelEvent.clientX
+          );
+          this.mousePositionRelative =
+            (wheelEvent.clientX - this.getLeft(this.elementUnderMouse)) /
+            this.getWidth(this.elementUnderMouse);
           this.mouseHasMoved = false;
         }
 
@@ -181,9 +200,16 @@ export class TimelineComponent implements OnInit{
         const elementUnderMouseLeft = this.getLeft(this.elementUnderMouse);
         const zoomableLeft = this.getLeft(zoomable);
         const containerLeft = this.getLeft(containerElement);
-        const moveAfterZoom = this.getWidth(this.elementUnderMouse) * this.mousePositionRelative;
+        const moveAfterZoom =
+          this.getWidth(this.elementUnderMouse) * this.mousePositionRelative;
 
-        containerElement.scrollLeft = Math.round(elementUnderMouseLeft - zoomableLeft - mousePosition + containerLeft + moveAfterZoom);
+        containerElement.scrollLeft = Math.round(
+          elementUnderMouseLeft -
+            zoomableLeft -
+            mousePosition +
+            containerLeft +
+            moveAfterZoom
+        );
       }
     });
   }
@@ -202,18 +228,17 @@ export class TimelineComponent implements OnInit{
   findElementUnderMouse(mousePosition: number): HTMLElement {
     const zoomable = this.zoomable.nativeElement;
     const children = Array.from(zoomable.children) as HTMLElement[];
-  
+
     for (const childElement of children) {
       const childRect = childElement.getBoundingClientRect();
-  
+
       if (childRect.left <= mousePosition && childRect.right >= mousePosition) {
         return childElement;
       }
     }
-  
+
     return zoomable;
   }
-  
 
   getLeft(element: HTMLElement): number {
     return (element as HTMLElement).getBoundingClientRect().left;
@@ -222,6 +247,4 @@ export class TimelineComponent implements OnInit{
   getWidth(element: HTMLElement): number {
     return (element as HTMLElement).getBoundingClientRect().width;
   }
-
-  
 }
