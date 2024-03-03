@@ -10,13 +10,19 @@ export class TimelineComponent implements OnInit {
   events: any[] | undefined;
   timelineWidth: number = 0;
   zoomLevel: number = 1;
-  @Input() value:any[]=[];
+  @Input() value: any[] = [];
   constructor(private eventService: EventDataService) {}
 
   ngOnInit(): void {
-    this.eventService.getEvents().subscribe((events) => {
-      this.events = events;
-    });
+    // this.eventService.getEvents().subscribe((events) => {
+    //   this.events = events;
+    // });
+    this.events = [
+      { content: 'Ordered', date: '15/02/201 10:30', dot:'Y',line:'N' },
+      { content: 'Processing', date: '15/02/201 14:00', },
+      { content: 'Shipped' },
+      { content: 'Delivered' },
+    ];
   }
 
   @HostListener('window:resize', ['$event'])
@@ -32,6 +38,45 @@ export class TimelineComponent implements OnInit {
       this.timelineWidth = this.events.length * eventCardWidth;
     } else {
       this.timelineWidth = 0;
+    }
+  }
+
+  toggleStatus(event: any): void {
+    console.log("event",event)
+    if (this.events) {
+      const index = this.events?.findIndex(
+        (item) => item.content === event.content
+      );
+      console.log("Got index:",index)
+      if (index !== -1 && index > 0) {
+        this.events[0]['dot']= 'N';
+        this.events[index-1].line='Y';
+        this.events[index].dot='Y';
+        // make every index behind it to have dots be 'N'
+        for(let i = 1; i < this.events.length; i++){
+          
+          if(i < index){
+            this.events[i]['dot']= 'N';
+            this.events[i-1]['line']= 'Y';
+
+          }
+          else if(i > index){
+            this.events[i]['dot']= 'N';
+            this.events[i-1]['line']= 'N';
+          }
+          
+        }
+        const a= this.events;
+          console.log(a)
+      }
+      else if(index == 0){
+        this.events[0]['dot']= 'Y';
+        this.events[0]['line']= 'N';
+          for(let i = 1; i < this.events.length; i++){
+            this.events[i]['dot']= 'N';
+            this.events[i]['line']= 'N';
+          }
+      }
     }
   }
 

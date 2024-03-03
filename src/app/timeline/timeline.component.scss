@@ -38,6 +38,15 @@
   background-color: #fff;
 }
 
+.timeline-event:first-child .timeline-point:first-child {
+  border: 2px solid #5f5f60;
+  background: #5f5f60;
+}
+.timeline-event:first-child .timeline-track {
+  background-color: #1b7ff3;
+  // box-shadow: 0px 4px 8px #8db8e4;
+}
+
 .timeline-track {
   flex-grow: 1;
   background-color: #dee2e6;
