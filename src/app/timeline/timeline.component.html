@@ -1,4 +1,4 @@
-<div class="timeline" (wheel)="onTimelineScroll($event)">
+<!-- <div class="timeline" (wheel)="onTimelineScroll($event)">
     <div class="timeline-wrapper" [style.width.px]="timelineWidth">
       <div *ngFor="let event of events" class="event-card" (click)="showEventDetails(event)">
         <img [src]="'assets/' + event.image" alt="{{ event.title }}">
@@ -11,4 +11,19 @@
     <button (click)="zoomIn()">Zoom In</button>
     <button (click)="zoomOut()">Zoom Out</button>
   </div>
-  
+   -->
+
+<div class="timeline">
+  <div *ngFor="let item of value" class="timeline-event">
+    <div class="timeline-point-track-container">
+      <div class="timeline-point" [ngClass]="item?.status === 'R'?'highlight':''"></div>
+      <div class="timeline-track" [ngClass]="item?.status === 'R'?'highlight':''"></div>
+    </div>
+    <div class="timeline-content">
+      <span>{{item.content}}</span>
+      <span class="timeline-date">
+        {{item.date}}
+      </span>
+    </div>
+  </div>
+</div>

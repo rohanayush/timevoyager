@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, Input } from '@angular/core';
 import { EventDataService } from '../event-data.service';
 
 @Component({
@@ -10,7 +10,7 @@ export class TimelineComponent implements OnInit {
   events: any[] | undefined;
   timelineWidth: number = 0;
   zoomLevel: number = 1;
-
+  @Input() value:any[]=[];
   constructor(private eventService: EventDataService) {}
 
   ngOnInit(): void {
