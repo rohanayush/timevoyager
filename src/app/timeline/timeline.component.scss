@@ -1,3 +1,7 @@
+.container{
+ 
+  // margin-top:70%;
+}
 .timeline {
   display: flex;
   flex-grow: 1;
@@ -44,22 +48,22 @@
 }
 
 .timeline-event:first-child .timeline-point:first-child {
-  border: 2px solid #5f5f60;
-  background: #5f5f60;
+  border: 2px solid silver;
+  background: silver;
 }
 
 .timeline-event:first-child .timeline-track {
   background-color: #1b7ff3;
 }
 .timeline-point-track-container:last-child .timeline-point:first-child {
-  border: 2px solid #5f5f60;
-  background: #5f5f60;
+  border: 2px solid silver;
+  background: silver;
 }
 
 
 .timeline-track {
   flex-grow: 1;
-  background-color: #5f5f60; /* Set background color for the track line */
+  background-color: silver; /* Set background color for the track line */
   height: 2px; /* Adjust to height for horizontal layout */
 }
 

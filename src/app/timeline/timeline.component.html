@@ -1,31 +1,35 @@
 
-<div class="timeline">
-  <div class="timeline-event">
+
+<app-event-card></app-event-card>
+<div class="container">
+  <div class="timeline">
+    <div class="timeline-event">
+      <div class="timeline-point-track-container">
+        <div class="timeline-point"></div>
+        <div class="timeline-track"></div>
+      </div>
+    </div>
+  
+    <div *ngFor="let item of timelineData;let i=index" class="timeline-event">
+      <div class="timeline-point-track-container">
+        <div
+          class="timeline-point"
+          [ngClass]="{ highlight: item.dot === 'Y' }"
+          (click)="toggleStatus(i)"
+        ></div>
+        <div
+          class="timeline-track"
+          [ngClass]="{ highlight: item.line === 'Y' }"
+        ></div>
+      </div>
+      <div class="timeline-content">
+        <span>{{ item.date }}</span>
+      </div>
+    </div>
     <div class="timeline-point-track-container">
       <div class="timeline-point"></div>
       <div class="timeline-track"></div>
     </div>
   </div>
-
-  <div *ngFor="let item of events" class="timeline-event">
-    <div class="timeline-point-track-container">
-      <div
-        class="timeline-point"
-        [ngClass]="{ highlight: item.dot === 'Y' }"
-        (click)="toggleStatus(item)"
-      ></div>
-      <div
-        class="timeline-track"
-        [ngClass]="{ highlight: item.line === 'Y' }"
-      ></div>
-    </div>
-    <div class="timeline-content">
-      <span>{{ item.content }}</span>
-      <span>{{ item.date }}</span>
-    </div>
-  </div>
-  <div class="timeline-point-track-container">
-    <div class="timeline-point"></div>
-    <div class="timeline-track"></div>
-  </div>
 </div>
+

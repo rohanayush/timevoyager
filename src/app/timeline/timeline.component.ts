@@ -10,16 +10,25 @@ export class TimelineComponent implements OnInit {
   events: any[] | undefined;
   timelineWidth: number = 0;
   zoomLevel: number = 1;
+  timelineData: any[] = [];
   @Input() value: any[] = [];
   constructor(private eventService: EventDataService) {}
 
   ngOnInit(): void {
-    // this.eventService.getEvents().subscribe((events) => {
-    //   this.events = events;
-    // });
+    this.eventService.getEvents().subscribe((events) => {
+      this.events = events;
+      this.timelineData = this.events.map((event, index) => {
+        return {
+          date: event.date, // Set content as date for first event, otherwise use title
+          dot: index === 0 ? 'Y' : 'N', // Set dot as 'Y' for first event, 'N' for others
+          line: 'N', // Set line as 'N' for all events
+        };
+      });
+      console.log('timeline', this.timelineData);
+    });
     this.events = [
-      { content: 'Ordered', date: '15/02/201 10:30', dot:'Y',line:'N' },
-      { content: 'Processing', date: '15/02/201 14:00', },
+      { content: 'Ordered', dot: 'Y', line: 'N' },
+      { content: 'Processing' },
       { content: 'Shipped' },
       { content: 'Delivered' },
     ];
@@ -41,42 +50,39 @@ export class TimelineComponent implements OnInit {
     }
   }
 
-  toggleStatus(event: any): void {
-    console.log("event",event)
-    if (this.events) {
-      const index = this.events?.findIndex(
-        (item) => item.content === event.content
-      );
-      console.log("Got index:",index)
+  toggleStatus(index: any): void {
+    console.log('event', index);
+    if (this.timelineData) {
+      // const index = this.timelineData?.findIndex(
+      //   (item) => item.content === event.content
+      // );
+      console.log('Got index:', index);
       if (index !== -1 && index > 0) {
-        this.events[0]['dot']= 'N';
-        this.events[index-1].line='Y';
-        this.events[index].dot='Y';
-        // make every index behind it to have dots be 'N'
-        for(let i = 1; i < this.events.length; i++){
-          
-          if(i < index){
-            this.events[i]['dot']= 'N';
-            this.events[i-1]['line']= 'Y';
+        this.timelineData[0]['dot'] = 'N';
 
+        this.timelineData[index - 1].line = 'Y';
+        this.timelineData[index].dot = 'Y';
+
+        // make every index behind it to have dots be 'N'
+        for (let i = 1; i < this.timelineData.length; i++) {
+          if (i < index) {
+            this.timelineData[i]['dot'] = 'N';
+            this.timelineData[i - 1]['line'] = 'Y';
+          } else if (i > index) {
+            this.timelineData[i]['dot'] = 'N';
+            this.timelineData[i - 1]['line'] = 'N';
           }
-          else if(i > index){
-            this.events[i]['dot']= 'N';
-            this.events[i-1]['line']= 'N';
-          }
-          
         }
-        const a= this.events;
-          console.log(a)
+      } else if (index == 0) {
+        this.timelineData[0]['dot'] = 'Y';
+        this.timelineData[0]['line'] = 'N';
+        for (let i = 1; i < this.timelineData.length; i++) {
+          this.timelineData[i]['dot'] = 'N';
+          this.timelineData[i]['line'] = 'N';
+        }
       }
-      else if(index == 0){
-        this.events[0]['dot']= 'Y';
-        this.events[0]['line']= 'N';
-          for(let i = 1; i < this.events.length; i++){
-            this.events[i]['dot']= 'N';
-            this.events[i]['line']= 'N';
-          }
-      }
+      const a = this.timelineData;
+      console.log(a);
     }
   }
 
