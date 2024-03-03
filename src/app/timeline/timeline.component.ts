@@ -25,6 +25,7 @@ export class TimelineComponent implements OnInit, AfterViewInit {
 
   @ViewChild('scrollable') scrollable!: ElementRef<HTMLDivElement>;
   @ViewChild('zoomable') zoomable!: ElementRef<HTMLElement>;
+  @ViewChild('cardsZoom') cardsZoom!: ElementRef<HTMLElement>;
 
   mouseMoveListener: Function | undefined;
   mouseUpListener: Function | undefined;
@@ -33,6 +34,8 @@ export class TimelineComponent implements OnInit, AfterViewInit {
   mouseHasMoved = true;
   mousePositionRelative: any;
   elementUnderMouse: any;
+  selectedEvent: any;
+  isPopupOpen: boolean | undefined;
 
   constructor(
     private eventService: EventDataService,
@@ -84,8 +87,20 @@ export class TimelineComponent implements OnInit, AfterViewInit {
   //     console.log(a);
   //   }
   // }
-  toggleStatus(index:any){
-    
+  toggleStatus(index: number): void {
+    // Open the popup modal
+
+    this.isPopupOpen = true;
+    // Set the selected event
+    if (this.events) {
+      this.selectedEvent = this.events[index];
+      console.log("selectedEvent",this.selectedEvent)
+    }
+  }
+
+  closePopup(): void {
+    // Close the popup modal
+    this.isPopupOpen = false;
   }
 
   mouseDown = false;
@@ -160,6 +175,7 @@ export class TimelineComponent implements OnInit, AfterViewInit {
   initZoomable(): void {
     const zoomable = this.zoomable.nativeElement;
     const containerElement = this.scrollable.nativeElement;
+    const cardsZoom = this.cardsZoom.nativeElement;
 
     zoomable.addEventListener('mousemove', () => {
       this.mouseHasMoved = true;

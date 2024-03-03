@@ -1,15 +1,20 @@
 <div class="scrollable" #scrollable *ngIf="events">
   <div class="timeline zoomable" #zoomable>
-    <div class="spacer" style="width: 26px;"></div>
-    <ng-container *ngFor="let event of events; let i=index" class="timeline-event">
+    <div class="spacer" style="width: 26px"></div>
+    <ng-container
+      *ngFor="let event of events; let i = index"
+      class="timeline-event"
+    >
       <div class="event"></div>
       <div class="spacer" [style.flexGrow]="i + 1"></div>
-      <div class="timeline-content" (click)="toggleStatus(i)">
+      <div class="timeline-content" (click)="toggleStatus(i)" #cardsZoom>
         <app-event-card [event]="event"></app-event-card>
       </div>
     </ng-container>
-    <div class="spacer" style="width: 26px;"></div>
+    <div class="spacer" style="width: 26px"></div>
   </div>
 </div>
 
-
+<div class="popup" *ngIf="isPopupOpen">
+  <app-event-details [event]="selectedEvent" (close)="closePopup()"></app-event-details>
+</div>

@@ -1,10 +1,24 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-event-details',
   templateUrl: './event-details.component.html',
-  styleUrl: './event-details.component.scss'
+  styleUrl: './event-details.component.scss',
 })
 export class EventDetailsComponent {
+  @Input() event: any;
+  @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
+  constructor() {}
+
+  ngOnInit(){
+    if(this.event){
+        console.log("this evenet",this.event)
+    }
+  }
+
+  onClose(): void {
+    this.close.emit();
+  }
 }
