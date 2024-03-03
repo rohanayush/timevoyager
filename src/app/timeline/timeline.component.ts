@@ -152,7 +152,15 @@ export class TimelineComponent implements OnInit, AfterViewInit {
       mouseUpListener();
     }
   }
-  
+
+  // search
+  onSearch(searchTerm: string) {
+    this.eventService.searchEvents(searchTerm).subscribe(
+      (results:any)=>{
+        this.events = results;
+      }
+    )
+  }
 
   //zooming
 

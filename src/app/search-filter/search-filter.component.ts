@@ -1,12 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-search-filter',
-  standalone: true,
-  imports: [],
   templateUrl: './search-filter.component.html',
   styleUrl: './search-filter.component.scss'
 })
 export class SearchFilterComponent {
+  searchTerm: string = '';
+  @Output() searchEvent: EventEmitter<string> = new EventEmitter<string>();
 
+  onSearch() {
+    this.searchEvent.emit(this.searchTerm);
+  }
 }

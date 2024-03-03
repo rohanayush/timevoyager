@@ -10,6 +10,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { SearchFilterComponent } from './search-filter/search-filter.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SliderComponent,
     EventDetailsComponent,
     EventCardComponent,
+    SearchFilterComponent
   ],
   imports: [
     BrowserModule,

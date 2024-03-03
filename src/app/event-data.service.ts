@@ -201,4 +201,25 @@ export class EventDataService {
     const event = this.events.find((e) => e.id === id);
     return of(event);
   }
+
+  searchEvents(query: string): Observable<any[]> {
+    // If query is empty, return all events
+    if (!query.trim()) {
+      return of(this.events);
+    }
+
+    // Filter events based on query
+    const searchedEvents = this.events.filter(event =>
+      event.title.toLowerCase().includes(query.toLowerCase()) ||
+      event.description.toLowerCase().includes(query.toLowerCase())
+    );
+
+    // If no events match the query, return "none"
+    if (searchedEvents.length === 0) {
+      return of(['none']);
+    }
+
+    // Return filtered events
+    return of(searchedEvents);
+  }
 }
