@@ -1,13 +1,14 @@
-<section class="cd-horizontal-timeline">
-	<div class="timeline">
-		<div class="events-wrapper">
-			<div class="events">
-				<ol *ngFor="let year of years">
-					<li><a  class="{{year.selected}}">{{year.label}}</a></li>
-				</ol>
-
-				<span class="filling-line" aria-hidden="true"></span>
-			</div> <!-- .events -->
-		</div> <!-- .events-wrapper -->
-    </div>	
-</section>
+<div class="timeline" (wheel)="onTimelineScroll($event)">
+    <div class="timeline-wrapper" [style.width.px]="timelineWidth">
+      <div *ngFor="let event of events" class="event-card" (click)="showEventDetails(event)">
+        <img [src]="'assets/' + event.image" alt="{{ event.title }}">
+        <h3>{{ event.title }}</h3>
+        <p>{{ event.date }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="zoom-controls">
+    <button (click)="zoomIn()">Zoom In</button>
+    <button (click)="zoomOut()">Zoom Out</button>
+  </div>
+  
