@@ -1,17 +1,32 @@
-import { Component, OnInit, HostListener, Input } from '@angular/core';
+import { Component, OnInit, HostListener, Input, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { EventDataService } from '../event-data.service';
+import { fromEvent, filter, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-timeline',
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss'],
 })
-export class TimelineComponent implements OnInit {
+export class TimelineComponent implements OnInit{
   events: any[] | undefined;
   timelineWidth: number = 0;
   zoomLevel: number = 1;
   timelineData: any[] = [];
   @Input() value: any[] = [];
+
+  @ViewChild('scrollable') scrollable!: ElementRef<HTMLDivElement>;
+  @ViewChild('zoomable') zoomable!: ElementRef<HTMLElement>;
+
+
+  scale = 1;
+  mouseHasMoved = true;
+  mousePositionRelative: any;
+  elementUnderMouse: any;
+
+
+
+ 
+  
   constructor(private eventService: EventDataService) {}
 
   ngOnInit(): void {
@@ -32,6 +47,9 @@ export class TimelineComponent implements OnInit {
       { content: 'Shipped' },
       { content: 'Delivered' },
     ];
+    document.addEventListener('DOMContentLoaded', () => {
+      this.initZoomable();
+    });
   }
 
   @HostListener('window:resize', ['$event'])
@@ -86,18 +104,7 @@ export class TimelineComponent implements OnInit {
     }
   }
 
-  onTimelineScroll(event: any) {
-    if (event) {
-      // Handle horizontal scrolling of the timeline
-      // You can adjust the scrolling speed according to your design
-      const scrollSpeed = 30;
-      const delta = Math.max(-1, Math.min(1, event.deltaY || -event.detail));
-      const timelineElement = document.querySelector('.timeline');
-      if (timelineElement) {
-        timelineElement.scrollLeft += delta * scrollSpeed;
-      }
-    }
-  }
+
 
   showEventDetails(event: any) {
     // Implement this method to show event details popup
@@ -118,17 +125,103 @@ export class TimelineComponent implements OnInit {
       }
     }
   }
-  zoomIn() {
-    // Increase zoom level and recalculate timeline width
-    this.zoomLevel += 0.1;
-    this.calculateTimelineWidth();
+ 
+  // scrolling
+  mouseDown = false;
+  initialGrabPosition = 0;
+  initialScrollPosition = 0;
+
+  onMouseDown(event: MouseEvent) {
+    this.mouseDown = true;
+    this.scrollable.nativeElement.style.cursor = 'grabbing';
+    this.initialGrabPosition = event.clientX;
+    this.initialScrollPosition = this.scrollable.nativeElement.scrollLeft;
   }
 
-  zoomOut() {
-    // Decrease zoom level and recalculate timeline width
-    if (this.zoomLevel > 0.1) {
-      this.zoomLevel -= 0.1;
-      this.calculateTimelineWidth();
+  onMouseUp() {
+    this.mouseDown = false;
+    this.scrollable.nativeElement.style.cursor = 'grab';
+  }
+
+  onMouseMove(event: MouseEvent) {
+    if (this.mouseDown) {
+      const mouseMovementDistance = event.clientX - this.initialGrabPosition;
+      this.scrollable.nativeElement.scrollLeft = this.initialScrollPosition - mouseMovementDistance;
     }
   }
+  
+
+
+
+  //zooming
+ 
+
+  initZoomable(): void {
+    const zoomable = this.zoomable.nativeElement;
+    const containerElement = this.scrollable.nativeElement;
+
+    zoomable.addEventListener('mousemove', () => {
+      this.mouseHasMoved = true;
+    });
+
+    zoomable.addEventListener('wheel', (wheelEvent) => {
+      if (this.isVerticalScrolling(wheelEvent)) {
+        wheelEvent.preventDefault();
+
+        this.scale = this.computeScale(this.scale, wheelEvent.deltaY);
+        zoomable.style.width = this.scale * 100 + '%';
+
+        if (this.mouseHasMoved) {
+          this.elementUnderMouse = this.findElementUnderMouse(wheelEvent.clientX);
+          this.mousePositionRelative = (wheelEvent.clientX - this.getLeft(this.elementUnderMouse)) / this.getWidth(this.elementUnderMouse);
+          this.mouseHasMoved = false;
+        }
+
+        const mousePosition = wheelEvent.clientX;
+        const elementUnderMouseLeft = this.getLeft(this.elementUnderMouse);
+        const zoomableLeft = this.getLeft(zoomable);
+        const containerLeft = this.getLeft(containerElement);
+        const moveAfterZoom = this.getWidth(this.elementUnderMouse) * this.mousePositionRelative;
+
+        containerElement.scrollLeft = Math.round(elementUnderMouseLeft - zoomableLeft - mousePosition + containerLeft + moveAfterZoom);
+      }
+    });
+  }
+
+  isVerticalScrolling(wheelEvent: WheelEvent): boolean {
+    const deltaX = Math.abs(wheelEvent.deltaX);
+    const deltaY = Math.abs(wheelEvent.deltaY);
+    return deltaY > deltaX;
+  }
+
+  computeScale(currentScale: number, wheelDelta: number): number {
+    const newScale = currentScale - wheelDelta * 0.005;
+    return Math.max(1, newScale);
+  }
+
+  findElementUnderMouse(mousePosition: number): HTMLElement {
+    const zoomable = this.zoomable.nativeElement;
+    const children = Array.from(zoomable.children) as HTMLElement[];
+  
+    for (const childElement of children) {
+      const childRect = childElement.getBoundingClientRect();
+  
+      if (childRect.left <= mousePosition && childRect.right >= mousePosition) {
+        return childElement;
+      }
+    }
+  
+    return zoomable;
+  }
+  
+
+  getLeft(element: HTMLElement): number {
+    return (element as HTMLElement).getBoundingClientRect().left;
+  }
+
+  getWidth(element: HTMLElement): number {
+    return (element as HTMLElement).getBoundingClientRect().width;
+  }
+
+  
 }

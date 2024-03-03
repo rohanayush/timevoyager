@@ -1,79 +1,35 @@
-.container{
- 
-  // margin-top:70%;
-}
-.timeline {
-  display: flex;
-  flex-grow: 1;
-  padding: 1rem;
-  overflow-x: auto; /* Enable horizontal scrolling if needed */
+* {
+  padding: 0;
+  margin: 0;
 }
 
-.timeline-event {
-  display: flex;
-  flex-direction: column;
-  gap:20px;
-  position: relative;
-  // border: 2px solid;
-  // align-items: start;
-  min-width: 70px; /* Adjust to min-width for horizontal layout */
-}
-
-.timeline-event:last-child {
-  min-width: 0; /* Adjust to min-width for horizontal layout */
-}
-
-.timeline-content {
-  padding: 0 3rem;
-  margin-left:-50px;
-  display: flex;
-  flex-direction: column;
-  // text-align: center;
-}
-
-.timeline-point-track-container {
+body {
   display: flex;
   align-items: center;
-  // flex-direction: column;
 }
 
-.timeline-point {
+.scrollable {
+  overflow-x: hidden;
+  width: 100%;
+  cursor: grab;
+}
+
+.timeline {
   display: flex;
-  align-self: baseline;
-  border: 2px solid #1b7ff3;
-  border-radius: 50%;
-  width: 1rem;
-  height: 1rem;
-  background-color: #fff;
+  flex-direction: row;
+  align-items: center;
+  height: 104px;
+  background-color: #f2f3f3;
 }
 
-.timeline-event:first-child .timeline-point:first-child {
-  border: 2px solid silver;
-  background: silver;
+.event {
+  width: 26px;
+  height: 26px;
+  border-radius: 100%;
+  background-color: rgb(0, 127, 255);
 }
 
-.timeline-event:first-child .timeline-track {
-  background-color: #1b7ff3;
-}
-.timeline-point-track-container:last-child .timeline-point:first-child {
-  border: 2px solid silver;
-  background: silver;
-}
-
-
-.timeline-track {
-  flex-grow: 1;
-  background-color: silver; /* Set background color for the track line */
-  height: 2px; /* Adjust to height for horizontal layout */
-}
-
-.timeline-date {
-  font-size: 14px;
-  font-style: italic;
-  padding-left: 5px;
-}
-
-.highlight {
-  background-color: #1b7ff3;
-  box-shadow: 0px 4px 8px #8db8e4;
+.spacer {
+  height: 6px;
+  background-color: rgba(0, 127, 255, 0.5);
 }
