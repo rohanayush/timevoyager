@@ -1,0 +1,37 @@
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Elevated appearance */
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-4px); /* Add slight elevation on hover */
+    }
+  
+    .card-content {
+      padding: 16px;
+    }
+  
+    .card-title {
+        font-size: 12px;
+        margin-bottom: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: calc(100% - 1em); /* Adjust width to accommodate the ellipsis */
+      }
+      
+  
+    .card-date {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 16px;
+    }
+  
+    .card-image {
+      width: 100%;
+      border-radius: 8px 8px 0 0; /* Rounded corners only at the top */
+    }
+  }
+  

@@ -9,15 +9,12 @@ import { EventsStruc } from '../model/events';
 })
 export class EventCardComponent {
   constructor(private eventsService: EventDataService) {}
-  event: EventsStruc | undefined;
-  @Input() eventId: number | undefined;
+  @Input()  event: any| undefined;
+  // @Input() eventId: number | undefined;
 
   ngOnInit() {
-    if (this.eventId) {
-      this.eventsService.getEventById(this.eventId).subscribe((data: any) => {
-        this.event = data;
-        console.log(`got event for ${this.eventId}:`,this.event)
-      });
+    if (this.event) {
+     console.log("event:",this.event)
     }
   }
 }

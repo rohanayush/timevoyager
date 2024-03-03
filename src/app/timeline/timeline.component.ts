@@ -42,22 +42,7 @@ export class TimelineComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.eventService.getEvents().subscribe((events) => {
       this.events = events;
-      // this.timelineData = this.events.map((event, index) => {
-      //   return {
-      //     date: event.date, // Set content as date for first event, otherwise use title
-      //     dot: index === 0 ? 'Y' : 'N', // Set dot as 'Y' for first event, 'N' for others
-      //     line: 'N', // Set line as 'N' for all events
-      //     sp
-      //   };
-      // });
-      console.log('timeline', this.timelineData);
     });
-    // this.events = [
-    //   { content: 'Ordered', dot: 'Y', line: 'N' },
-    //   { content: 'Processing' },
-    //   { content: 'Shipped' },
-    //   { content: 'Delivered' },
-    // ];
     document.addEventListener('DOMContentLoaded', () => {
       this.initZoomable();
     });
@@ -67,40 +52,40 @@ export class TimelineComponent implements OnInit, AfterViewInit {
     this.initScrollable();
   }
 
-  toggleStatus(index: any): void {
-    console.log('event', index);
-    if (this.timelineData) {
-      // const index = this.timelineData?.findIndex(
-      //   (item) => item.content === event.content
-      // );
-      console.log('Got index:', index);
-      if (index !== -1 && index > 0) {
-        this.timelineData[0]['dot'] = 'N';
+  // toggleStatus(index: any): void {
+  //   console.log('event', index);
+  //   if (this.timelineData) {
+  //     console.log('Got index:', index);
+  //     if (index !== -1 && index > 0) {
+  //       this.timelineData[0]['dot'] = 'N';
 
-        this.timelineData[index - 1].line = 'Y';
-        this.timelineData[index].dot = 'Y';
+  //       this.timelineData[index - 1].line = 'Y';
+  //       this.timelineData[index].dot = 'Y';
 
-        // make every index behind it to have dots be 'N'
-        for (let i = 1; i < this.timelineData.length; i++) {
-          if (i < index) {
-            this.timelineData[i]['dot'] = 'N';
-            this.timelineData[i - 1]['line'] = 'Y';
-          } else if (i > index) {
-            this.timelineData[i]['dot'] = 'N';
-            this.timelineData[i - 1]['line'] = 'N';
-          }
-        }
-      } else if (index == 0) {
-        this.timelineData[0]['dot'] = 'Y';
-        this.timelineData[0]['line'] = 'N';
-        for (let i = 1; i < this.timelineData.length; i++) {
-          this.timelineData[i]['dot'] = 'N';
-          this.timelineData[i]['line'] = 'N';
-        }
-      }
-      const a = this.timelineData;
-      console.log(a);
-    }
+  //       // make every index behind it to have dots be 'N'
+  //       for (let i = 1; i < this.timelineData.length; i++) {
+  //         if (i < index) {
+  //           this.timelineData[i]['dot'] = 'N';
+  //           this.timelineData[i - 1]['line'] = 'Y';
+  //         } else if (i > index) {
+  //           this.timelineData[i]['dot'] = 'N';
+  //           this.timelineData[i - 1]['line'] = 'N';
+  //         }
+  //       }
+  //     } else if (index == 0) {
+  //       this.timelineData[0]['dot'] = 'Y';
+  //       this.timelineData[0]['line'] = 'N';
+  //       for (let i = 1; i < this.timelineData.length; i++) {
+  //         this.timelineData[i]['dot'] = 'N';
+  //         this.timelineData[i]['line'] = 'N';
+  //       }
+  //     }
+  //     const a = this.timelineData;
+  //     console.log(a);
+  //   }
+  // }
+  toggleStatus(index:any){
+    
   }
 
   mouseDown = false;
