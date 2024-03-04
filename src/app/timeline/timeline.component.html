@@ -4,13 +4,17 @@
     <div class="spacer" style="width: 106px"></div>
     <ng-container
       *ngFor="let event of events; let i = index"
-      class="timeline-event"
+      class="timeline-event" 
     >
+    <div class="dot-card">
       <div class="event"></div>
-      <div class="spacer" [style.flexGrow]="1"></div>
       <div class="timeline-content" (click)="toggleStatus(i)" #cardsZoom>
         <app-event-card [event]="event"></app-event-card>
       </div>
+    </div>
+     
+      <div class="spacer" [style.flexGrow]="1"></div>
+      
     </ng-container>
     <div class="spacer" style="width: 106px"></div>
   </div>

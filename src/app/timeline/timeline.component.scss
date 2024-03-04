@@ -21,6 +21,7 @@ body {
   align-items: center;
   height: 40vh;
   background-color: #f2f3f3;
+  min-width:80vw;
 }
 
 .event {
@@ -37,9 +38,9 @@ body {
   // z-index:999;
 }
 .timeline-content{
-  margin-top:210px;
-  margin-left:-30px;
-  padding:0 0.3rem;
+  // margin-top:210px;
+  
+  
 }
 
 .popup{
@@ -53,4 +54,16 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.dot-card{
+  position: relative;
+  .timeline-content{
+    margin-left:-30px;
+    padding:0 0.3rem;
+    position: absolute;
+    top:30%;
+    margin-top:20px;
+    margin-right:30px;
+  }
 }
