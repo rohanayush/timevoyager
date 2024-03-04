@@ -64,7 +64,7 @@ export class EventDataService {
     },
     
     {
-      id: 8,
+      id: 7,
       title: 'The Renaissance',
       date: '14th to 17th Centuries',
       description:
@@ -73,7 +73,7 @@ export class EventDataService {
       video: 'https://youtu.be/UsKSB-aT3ys?si=nwm1CmndCDtggrts',
     },
     {
-      id: 9,
+      id: 8,
       title: 'The Atomic Bomb',
       date: '1945',
       description:
@@ -82,7 +82,7 @@ export class EventDataService {
       video: 'https://youtu.be/w4q1fG1vh5I?si=dXEBRGUvMPYxxick',
     },
     {
-      id: 10,
+      id: 9,
       title: 'The Internet Revolution',
       date: 'Late 20th Century',
       description:
