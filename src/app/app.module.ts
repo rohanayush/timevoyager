@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchFilterComponent } from './search-filter/search-filter.component';
+import {MatButtonModule} from '@angular/material/button';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,6 +23,7 @@ import { SearchFilterComponent } from './search-filter/search-filter.component';
     BrowserAnimationsModule,
     CommonModule,
     FormsModule,
+    MatButtonModule
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

@@ -70,7 +70,7 @@ export class TimelineComponent implements OnInit, AfterViewInit {
 
   
 
-  // new scrolling
+  // scrolling
   initScrollable(): void {
     const scrollableElement = this.scrollable.nativeElement;
   
@@ -89,13 +89,11 @@ export class TimelineComponent implements OnInit, AfterViewInit {
     const initialGrabPosition = event.clientX;
     const initialScrollPosition = scrollableElement.scrollLeft;
   
-    // Attach mousemove event listener only when left mouse button is pressed
     const mouseMoveListener = this.renderer.listen(scrollableElement, 'mousemove', (mouseMoveEvent) => {
       const mouseMovementDistance = mouseMoveEvent.clientX - initialGrabPosition;
       scrollableElement.scrollLeft = initialScrollPosition - mouseMovementDistance;
     });
   
-    // Detach mousemove event listener when mouse button is released
     const mouseUpListener = this.renderer.listen(document, 'mouseup', () => {
       this.onMouseUp(mouseMoveListener, mouseUpListener);
     });
