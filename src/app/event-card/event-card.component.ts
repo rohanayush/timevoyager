@@ -10,11 +10,8 @@ import { EventsStruc } from '../model/events';
 export class EventCardComponent {
   constructor(private eventsService: EventDataService) {}
   @Input()  event: any| undefined;
-  // @Input() eventId: number | undefined;
 
   ngOnInit() {
-    if (this.event) {
-     console.log("event:",this.event)
-    }
+    
   }
 }

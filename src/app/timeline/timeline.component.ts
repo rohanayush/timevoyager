@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  HostListener,
   Input,
   ElementRef,
   ViewChild,
@@ -9,7 +8,6 @@ import {
   Renderer2,
 } from '@angular/core';
 import { EventDataService } from '../event-data.service';
-import { fromEvent, filter, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-timeline',
@@ -37,6 +35,10 @@ export class TimelineComponent implements OnInit, AfterViewInit {
   selectedEvent: any;
   isPopupOpen: boolean | undefined;
 
+  mouseDown = false;
+  initialGrabPosition = 0;
+  initialScrollPosition = 0;
+
   constructor(
     private eventService: EventDataService,
     private renderer: Renderer2
@@ -55,57 +57,18 @@ export class TimelineComponent implements OnInit, AfterViewInit {
     this.initScrollable();
   }
 
-  // toggleStatus(index: any): void {
-  //   console.log('event', index);
-  //   if (this.timelineData) {
-  //     console.log('Got index:', index);
-  //     if (index !== -1 && index > 0) {
-  //       this.timelineData[0]['dot'] = 'N';
-
-  //       this.timelineData[index - 1].line = 'Y';
-  //       this.timelineData[index].dot = 'Y';
-
-  //       // make every index behind it to have dots be 'N'
-  //       for (let i = 1; i < this.timelineData.length; i++) {
-  //         if (i < index) {
-  //           this.timelineData[i]['dot'] = 'N';
-  //           this.timelineData[i - 1]['line'] = 'Y';
-  //         } else if (i > index) {
-  //           this.timelineData[i]['dot'] = 'N';
-  //           this.timelineData[i - 1]['line'] = 'N';
-  //         }
-  //       }
-  //     } else if (index == 0) {
-  //       this.timelineData[0]['dot'] = 'Y';
-  //       this.timelineData[0]['line'] = 'N';
-  //       for (let i = 1; i < this.timelineData.length; i++) {
-  //         this.timelineData[i]['dot'] = 'N';
-  //         this.timelineData[i]['line'] = 'N';
-  //       }
-  //     }
-  //     const a = this.timelineData;
-  //     console.log(a);
-  //   }
-  // }
   toggleStatus(index: number): void {
-    // Open the popup modal
-
     this.isPopupOpen = true;
-    // Set the selected event
     if (this.events) {
       this.selectedEvent = this.events[index];
-      console.log("selectedEvent",this.selectedEvent)
     }
   }
 
   closePopup(): void {
-    // Close the popup modal
     this.isPopupOpen = false;
   }
 
-  mouseDown = false;
-  initialGrabPosition = 0;
-  initialScrollPosition = 0;
+  
 
   // new scrolling
   initScrollable(): void {

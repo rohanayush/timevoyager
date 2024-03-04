@@ -13,9 +13,6 @@ export class EventDetailsComponent {
   constructor() {}
 
   ngOnInit(){
-    if(this.event){
-        console.log("this evenet",this.event)
-    }
   }
 
   onClose(): void {
